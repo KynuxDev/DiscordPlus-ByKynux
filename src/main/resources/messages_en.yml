@@ -1,0 +1,169 @@
+# ===================================
+#     DiscordPlus English Messages
+# ===================================
+
+# General
+prefix: "&8[&bDiscordPlus&8] &r"
+no-permission: "{prefix}&cYou don't have permission to use this command!"
+player-only: "{prefix}&cThis command can only be used by players!"
+unknown-command: "{prefix}&cUnknown command! Use &e/discordplus help &cfor help."
+
+# Account Linking
+account-linking:
+  verification-sent: "{prefix}&aVerification code sent to your Discord!"
+  verification-success: "{prefix}&aAccount successfully linked!"
+  verification-failed: "{prefix}&cVerification failed! Code is wrong or expired."
+  already-linked: "{prefix}&cThis account is already linked!"
+  not-linked: "{prefix}&cYour account is not linked with Discord!"
+  link-required: "&c&l[REQUIRED]"
+  link-required-message: "&cYou must link your Discord account!"
+  link-instruction: "&e/verify &7to link your account."
+  link-suggestion: "&aLink your Discord account for extra features!"
+  link-suggestion-instruction: "&e/verify &7command to link."
+
+# Permission Sync
+permission-sync:
+  role-added: "{prefix}&aDiscord role {role} has been given!"
+  role-removed: "{prefix}&cDiscord role {role} has been removed!"
+  sync-started: "{prefix}&ePermission roles are being synced..."
+  sync-completed: "{prefix}&aPermission roles successfully synced!"
+  system-disabled: "{prefix}&cPermission sync system is disabled!"
+  account-not-linked: "{prefix}&cYou must link your Discord account before using this command!"
+  account-not-linked-instruction: "{prefix}&e/verify command to link your account."
+
+# Rewards
+rewards:
+  daily-claimed: "{prefix}&aDaily reward claimed! ({streak} day streak)"
+  daily-already-claimed: "{prefix}&cYou already claimed your daily reward today!"
+  weekly-claimed: "{prefix}&aWeekly reward claimed!"
+  weekly-already-claimed: "{prefix}&cYou already claimed your weekly reward this week!"
+  welcome-reward: "&a&l✦ {reward} given! &a&l✦"
+  invalid-args: "{prefix}&cInvalid arguments! Use: &e/rewards [daily|weekly|claim]"
+  help-title: "{prefix}&e&lRewards Help:"
+  daily-help: "&e/rewards daily &7- Claim daily reward"
+  weekly-help: "&e/rewards weekly &7- Claim weekly reward"
+  claim-help: "&e/rewards claim &7- Check available rewards"
+
+# Vote
+vote:
+  success: "{prefix}&aThank you for voting! Your reward has been given."
+  streak-bonus: "{prefix}&e{streak} day vote streak bonus reward!"
+
+# GUI
+gui:
+  main-title: "DiscordPlus Menu"
+  account-title: "Account Management"
+  rewards-title: "Rewards"
+  admin-title: "Admin Panel"
+
+# Welcome Messages
+welcome:
+  title: "&a&l ◆ &e&lWelcome {player}! &a&l◆"
+  message: "&7We hope you have a great time on our server!"
+  discord-info: "&bDiscord: &e/verify &7to link your account"
+  vote-info: "&bVote: &e/vote &7to vote for the server"
+
+# Discord Embeds
+discord:
+  role-change-title: "🎭 Role Change"
+  role-added: "✅ **{role}** role has been given to you!"
+  role-removed: "❌ **{role}** role has been removed from you!"
+  server-field: "Server"
+  time-field: "Time"
+
+# Commands
+commands:
+  verify:
+    description: "Link your Minecraft account with Discord"
+    usage: "Usage: /{command}"
+    help: "&eLink your Minecraft account with Discord"
+    
+  discord:
+    description: "Display Discord connection information"
+    usage: "Usage: /{command}"
+    help: "&eDisplay Discord connection information"
+    info-title: "&b&l=== Discord Information ==="
+    server-name: "&6Server: &e{server}"
+    invite-link: "&6Invite: &e{invite}"
+    member-count: "&6Members: &e{count}"
+    account-status: "&6Account: &e{status}"
+    linked-as: "&aLinked as: &e{tag}"
+    not-linked: "&cNot linked"
+    
+  rewards:
+    description: "Manage reward system"
+    usage: "Usage: /{command} [daily|weekly|claim]"
+    help: "&eManage your rewards - daily, weekly, and more!"
+    
+  sync:
+    description: "Manually sync Discord roles with permissions"
+    usage: "Usage: /{command}"
+    help: "&eManually sync your Discord roles with permissions"
+    
+  discordplus:
+    description: "Plugin management commands"
+    usage: "Usage: /{command} [reload|status|info]"
+    help: "&ePlugin management commands for admins"
+    help-reload: "&e/discordplus reload &7- Reload the configuration"
+    help-status: "&e/discordplus status &7- Show plugin status"
+    help-info: "&e/discordplus info &7- Show plugin information"
+    reloaded: "{prefix}&aPlugin configuration reloaded!"
+    status-title: "&b&l=== DiscordPlus Status ==="
+    status-version: "&6Version: &e{version}"
+    status-uptime: "&6Uptime: &e{uptime}"
+    status-discord: "&6Discord: &e{status}"
+    status-database: "&6Database: &e{status}"
+    status-players: "&6Linked Players: &e{count}"
+    connected: "&aConnected"
+    disconnected: "&cDisconnected"
+    invalid-args: "{prefix}&cInvalid arguments! Use: &e/discordplus [reload|status|info]"
+    info-title: "&b&l=== DiscordPlus Info ==="
+    info-developer: "&6Developer: &e{developer}"
+    info-website: "&6Website: &e{website}"
+    info-version: "&6Version: &e{version}"
+    info-description: "&6Description: &e{description}"
+    info-language: "&6Language: &e{language}"
+
+# Error Messages
+errors:
+  command-failed: "{prefix}&cCommand execution failed!"
+  player-not-found: "{prefix}&cPlayer not found!"
+  database-error: "{prefix}&cDatabase error occurred!"
+  discord-error: "{prefix}&cDiscord connection error!"
+  permission-denied: "{prefix}&cYou don't have permission to do this!"
+  invalid-usage: "{prefix}&cInvalid usage! Check command help."
+  cooldown: "{prefix}&cYou must wait {time} before using this command again!"
+  maintenance: "{prefix}&cSystem is under maintenance. Please try again later."
+  error-occurred: "{prefix}&cAn error occurred: {error}"
+
+# Success Messages
+success:
+  operation-completed: "{prefix}&aOperation completed successfully!"
+  data-saved: "{prefix}&aData saved successfully!"
+  settings-updated: "{prefix}&aSettings updated!"
+  connection-established: "{prefix}&aConnection established!"
+
+# Death Messages
+death:
+  player-died: "{player} died"
+  killed-by-player: "{player} was killed by {killer}"
+  death-message: "{message}"
+
+# Achievement Messages
+achievement:
+  player-achieved: "{player} has achieved {achievement}"
+  advancement-completed: "{player} has made the advancement {advancement}"
+
+# Chat Bridge
+chat:
+  minecraft-to-discord: "**{player}**: {message}"
+  discord-to-minecraft: "&8[&bDiscord&8] &b{user}&8: &f{message}"
+  webhook-name: "Minecraft Chat"
+
+# Status Messages
+status:
+  server-online: "🟢 Server is Online"
+  server-offline: "🔴 Server is Offline"
+  players-online: "👥 Players: {online}/{max}"
+  server-info: "📊 Server Status"
+  last-updated: "Last Updated"

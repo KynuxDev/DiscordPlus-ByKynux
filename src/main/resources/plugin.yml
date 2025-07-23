@@ -1,0 +1,80 @@
+name: DiscordPlus
+version: '1.0'
+main: kynux.cloud.discordPlus.DiscordPlus
+load: STARTUP
+api-version: 1.16
+authors: [ Kynux ]
+website: https://kynux.cloud
+description: Discord ve Minecraft entegrasyonu için gelişmiş plugin (1.16.5+ uyumlu)
+
+depend: []
+softdepend: [VotingPlugin, Vault]
+
+commands:
+  verify:
+    description: Link your Minecraft account with Discord
+    usage: /<command>
+    aliases: [dogrula, link]
+  
+  discord:
+    description: Display Discord connection information
+    usage: /<command>
+    
+  discordplus:
+    description: Plugin management commands
+    usage: /<command> [reload|status|info]
+    aliases: [dp, discordp]
+    permission: discordplus.admin
+    
+  dpgui:
+    description: Opens the main DiscordPlus GUI
+    usage: /<command>
+    
+  sync:
+    description: Manually sync Discord roles with permissions
+    usage: /<command>
+    aliases: [syncrole, rolesync]
+    permission: discordplus.command.sync
+
+  istatistik:
+    description: Opens the statistics GUI
+    usage: /<command>
+    aliases: [stats, istatistikler]
+    permission: discordplus.command.stats
+    
+permissions:
+  discordplus.*:
+    description: Tüm DiscordPlus izinleri
+    default: op
+    children:
+      discordplus.admin: true
+      discordplus.use: true
+      discordplus.bypass: true
+      
+  discordplus.admin:
+    description: Admin komutları
+    default: op
+    
+  discordplus.use:
+    description: Temel plugin kullanımı
+    default: true
+    
+  discordplus.bypass:
+    description: Zorunlu eşleme atla
+    default: op
+    
+  discordplus.command.verify:
+    description: Verify komutu kullanma
+    default: true
+    
+  discordplus.command.discord:
+    description: Discord komutu kullanma
+    default: true
+    
+  discordplus.command.sync:
+    description: Permission sync komutu kullanma
+    default: true
+    
+  discordplus.command.stats:
+    description: İstatistik menüsünü açma
+    default: true

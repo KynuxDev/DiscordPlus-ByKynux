@@ -1,0 +1,160 @@
+  # ===================================
+#     DiscordPlus Türkçe Mesajlar
+# ===================================
+
+# Genel
+prefix: "&8[&bDiscordPlus&8] &r"
+no-permission: "{prefix}&cBu komutu kullanma yetkiniz yok!"
+player-only: "{prefix}&cBu komut sadece oyuncular tarafından kullanılabilir!"
+unknown-command: "{prefix}&cBilinmeyen komut! Yardım için &e/discordplus help &ckullanın."
+
+# Hesap Eşleme
+account-linking:
+  verification-sent: "{prefix}&aDoğrulama kodu Discord'unuza gönderildi!"
+  verification-success: "{prefix}&aHesap başarıyla eşlendi!"
+  verification-failed: "{prefix}&cDoğrulama başarısız! Kod yanlış veya süresi dolmuş."
+  already-linked: "{prefix}&cBu hesap zaten eşlenmiş!"
+  not-linked: "{prefix}&cHesabınız Discord ile eşlenmemiş!"
+  link-required: "&c&l[ZORUNLU]"
+  link-required-message: "&cDiscord hesabınızı eşlemeniz gerekiyor!"
+  link-instruction: "&e/verify &7komutunu kullanarak eşleme yapın."
+  link-suggestion: "&aDiscord hesabınızı eşleyerek ek özelliklerden yararlanabilirsiniz!"
+  link-suggestion-instruction: "&e/verify &7komutunu kullanın."
+
+# Permission Sync
+permission-sync:
+  role-added: "{prefix}&aDiscord rolü {role} verildi!"
+  role-removed: "{prefix}&cDiscord rolü {role} kaldırıldı!"
+  sync-started: "{prefix}&eYetki rolleri eşitleniyor..."
+  sync-completed: "{prefix}&aYetki rolleri başarıyla eşitlendi!"
+  system-disabled: "{prefix}&cYetki eşitleme sistemi devre dışı!"
+  account-not-linked: "{prefix}&cBu komutu kullanmadan önce Discord hesabınızı bağlamanız gerekir!"
+  account-not-linked-instruction: "{prefix}&Hesabınızı bağlamak için &e/verify &rkomutunu kullanın."
+
+# Ödüller
+rewards:
+  daily-claimed: "{prefix}&aGünlük ödül alındı! ({streak} günlük seri)"
+  daily-already-claimed: "{prefix}&cBugünlük ödülünüzü zaten aldınız!"
+  weekly-claimed: "{prefix}&aHaftalık ödül alındı!"
+  weekly-already-claimed: "{prefix}&cBu haftalık ödülünüzü zaten aldınız!"
+  welcome-reward: "&a&l✦ {reward} verildi! &a&l✦"
+  invalid-args: "{prefix}&cGeçersiz argümanlar! Kullanım: &e/rewards [daily|weekly|claim]"
+  help-title: "{prefix}&e&lÖdül Yardımı:"
+  daily-help: "&e/rewards daily &7- Günlük ödülünüzü alın"
+  weekly-help: "&e/rewards weekly &7- Haftalık ödülünüzü alın"
+  claim-help: "&e/rewards claim &7- Mevcut ödülleri kontrol edin"
+
+# Vote
+vote:
+  success: "{prefix}&aOyunuz için teşekkürler! Ödülünüz verildi."
+  streak-bonus: "{prefix}&e{streak} günlük oy serisi bonus ödülü!"
+
+# GUI
+gui:
+  main-title: "DiscordPlus Menü"
+  account-title: "Hesap Yönetimi"
+  rewards-title: "Ödüller"
+  admin-title: "Yönetici Paneli"
+
+# Hoşgeldin Mesajları
+welcome:
+  title: "&a&l ◆ &e&lHoş geldin {player}! &a&l◆"
+  message: "&7Sunucumuzda iyi vakit geçirmenizi dileriz!"
+  discord-info: "&bDiscord: &e/verify &7ile hesabınızı bağlayın"
+  vote-info: "&bOy: &e/vote &7ile sunucuya oy verin"
+
+# Discord Embeds
+discord:
+  role-change-title: "🎭 Rol Değişikliği"
+  role-added: "✅ **{role}** rolü size verildi!"
+  role-removed: "❌ **{role}** rolü sizden alındı!"
+  server-field: "Sunucu"
+  time-field: "Zaman"
+
+# Komutlar
+commands:
+  verify:
+    description: "Minecraft hesabınızı Discord ile bağlayın"
+    usage: "Kullanım: /{command}"
+    help: "&eMinecraft hesabınızı Discord ile bağlayın"
+    
+  discord:
+    description: "Discord bağlantı bilgilerini görüntüleyin"
+    usage: "Kullanım: /{command}"
+    help: "&eDiscord bağlantı bilgilerini görüntüleyin"
+    info-title: "&b&l=== Discord Bilgileri ==="
+    server-name: "&6Sunucu: &e{server}"
+    invite-link: "&6Davet: &e{invite}"
+    member-count: "&6Üyeler: &e{count}"
+    account-status: "&6Hesap: &e{status}"
+    linked-as: "&aBağlı: &e{tag}"
+    not-linked: "&cBağlı değil"
+    
+  rewards:
+    description: "Ödül sistemini yönetin"
+    usage: "Kullanım: /{command} [daily|weekly|claim]"
+    help: "&eÖdüllerinizi yönetin - günlük, haftalık ve daha fazlası!"
+    
+  sync:
+    description: "Discord rollerini yetkilerle manuel olarak eşitleyin"
+    usage: "Kullanım: /{command}"
+    help: "&eDiscord rollerinizi yetkilerle manuel olarak eşitleyin"
+    
+  discordplus:
+    description: "Eklenti yönetimi komutları"
+    usage: "Kullanım: /{command} [reload|status|info]"
+    help: "&eYöneticiler için eklenti yönetimi komutları"
+    reloaded: "{prefix}&aEklenti yapılandırması yeniden yüklendi!"
+    status-title: "&b&l=== DiscordPlus Durumu ==="
+    status-version: "&6Sürüm: &e{version}"
+    status-uptime: "&6Çalışma Süresi: &e{uptime}"
+    status-discord: "&6Discord: &e{status}"
+    status-database: "&6Veritabanı: &e{status}"
+    status-players: "&6Bağlı Oyuncular: &e{count}"
+    connected: "&aBağlı"
+    disconnected: "&cBağlantı kesildi"
+    invalid-args: "{prefix}&cGeçersiz argümanlar! Kullanım: &e/discordplus [reload|status|info]"
+
+# Hata Mesajları
+errors:
+  command-failed: "{prefix}&cKomut yürütme başarısız!"
+  player-not-found: "{prefix}&cOyuncu bulunamadı!"
+  database-error: "{prefix}&cVeritabanı hatası oluştu!"
+  discord-error: "{prefix}&cDiscord bağlantı hatası!"
+  permission-denied: "{prefix}&cBunu yapma izniniz yok!"
+  invalid-usage: "{prefix}&cGeçersiz kullanım! Komut yardımını kontrol edin."
+  cooldown: "{prefix}&cBu komutu tekrar kullanmadan önce {time} beklemelisiniz!"
+  maintenance: "{prefix}&cSistem bakımda. Lütfen daha sonra tekrar deneyin."
+  error-occurred: "{prefix}&cBir hata oluştu: {error}"
+
+# Başarı Mesajları
+success:
+  operation-completed: "{prefix}&aİşlem başarıyla tamamlandı!"
+  data-saved: "{prefix}&aVeri başarıyla kaydedildi!"
+  settings-updated: "{prefix}&aAyarlar güncellendi!"
+  connection-established: "{prefix}&aBağlantı kuruldu!"
+
+# Ölüm Mesajları
+death:
+  player-died: "{player} öldü"
+  killed-by-player: "{player}, {killer} tarafından öldürüldü"
+  death-message: "{message}"
+
+# Başarı Mesajları
+achievement:
+  player-achieved: "{player} başarı kazandı: {achievement}"
+  advancement-completed: "{player} ilerlemeyi tamamladı: {advancement}"
+
+# Chat Köprüsü
+chat:
+  minecraft-to-discord: "**{player}**: {message}"
+  discord-to-minecraft: "&8[&bDiscord&8] &b{user}&8: &f{message}"
+  webhook-name: "Minecraft Sohbeti"
+
+# Durum Mesajları
+status:
+  server-online: "🟢 Sunucu Çevrimiçi"
+  server-offline: "🔴 Sunucu Çevrimdışı"
+  players-online: "👥 Oyuncular: {online}/{max}"
+  server-info: "📊 Sunucu Durumu"
+  last-updated: "Son güncelleme"

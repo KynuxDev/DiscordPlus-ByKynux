@@ -1,0 +1,467 @@
+# ===================================
+#       DiscordPlus Configuration
+# ===================================
+
+# Discord Bot Ayarları
+discord:
+  # Discord Bot Token (BOT_TOKEN buraya)
+  token: ""
+  # Discord Server (Guild) ID
+  guild-id: ""
+  
+  # Bot Activity Ayarları
+  activity:
+    # Activity türü: PLAYING, WATCHING, LISTENING, STREAMING, COMPETING
+    type: "WATCHING"
+    # Dinamik aktivite (birden fazla mesaj arasında geçiş)
+    dynamic: true
+    # Güncelleme süresi (saniye) - dynamic true ise
+    update-interval: 30
+    # Aktivite mesajları - Placeholderlar kullanılabilir
+    messages:
+      - "%online% oyuncu online!"
+      - "%player% izliyorum"
+      - "Sunucuyu koruyorum"
+      - "%online%/%max_players% oyuncu"
+      - "Minecraft Sunucusunu İzliyor"
+      - "%server_name% sunucusunda"
+      - "Toplam %total_playtime% saat oynanmış"
+    # Statik aktivite (dynamic false ise sadece bu kullanılır)
+    static-message: "Minecraft Sunucusunu İzliyor"
+    
+    # Placeholder ayarları
+    placeholders:
+      # Kullanılabilir placeholder'lar:
+      # %online% - Online oyuncu sayısı
+      # %max_players% - Maksimum oyuncu sayısı
+      # %player% - Rastgele online oyuncu ismi
+      # %server_name% - Sunucu adı
+      # %total_playtime% - Toplam oynanma süresi
+      # %tps% - Sunucu TPS
+      # %uptime% - Sunucu çalışma süresi
+      enabled: true
+      # Placeholder güncellemesi için cache süresi (saniye)
+      cache-duration: 10
+    
+      
+  # Discord sunucu davet linki
+  invite-link: "https://discord.gg/YOUR_INVITE"
+
+# Veritabanı Ayarları
+database:
+  # SQLite dosya adı
+  file: "discordplus.db"
+  # Bağlantı timeout (saniye)
+  timeout: 30
+
+# Zaman Ayarları
+timezone: "Europe/Istanbul"
+
+# Dil Ayarları
+language: "tr"
+
+# ===================================
+#           Modül Ayarları
+# ===================================
+
+modules:
+  # Hesap Eşleme Sistemi
+  account-linking:
+    enabled: true
+    channel-id: ""
+    # Başarılı hesap eşleştirmelerinin gönderileceği log kanalı ID'si
+    log-channel-id: ""
+    # Doğrulama kodu süresi (dakika)
+    verification-timeout: 10
+    # Whitelist entegrasyonu (sadece eşlenmiş hesaplar girebilir)
+    whitelist-integration: false
+    # Eşleme zorunlu mu?
+    required: false
+    embed:
+      title: "🔗 Hesap Eşleme Sistemi"
+      description: "Minecraft hesabınızı Discord ile eşlemek için aşağıdaki adımları takip edin:"
+    button:
+      label: "🔗 Hesap Eşle"
+    role-management:
+      enabled: true
+      linked-role-id: ""
+      unlinked-role-id: ""
+
+  # Permission-Role Sync Sistemi
+  permission-sync:
+    enabled: true
+    # Permission kontrol sıklığı (saniye)
+    check-interval: 300
+    # Rol eşleştirmeleri (permission: discord-role-id)
+    role-mappings:
+      discordplus:
+        # VIP Rolleri
+        vip:
+          role-id: ""
+          name: "VIP"
+          priority: 1
+          plus:
+            role-id: ""
+            name: "VIP+"
+            priority: 2
+        # Staff Rolleri
+        mod:
+          role-id: ""
+          name: "Moderatör"
+          priority: 10
+        admin:
+          role-id: ""
+          name: "Admin"
+          priority: 20
+        owner:
+          role-id: ""
+          name: "Owner"
+          priority: 99
+        # Özel Roller
+        donator:
+          role-id: ""
+          name: "Destekçi"
+          priority: 5
+        builder:
+          role-id: ""
+          name: "Builder"
+          priority: 3
+    # DM Bildirimleri
+    dm-notifications:
+      enabled: true
+      # Rol alınan zaman bildirim gönder
+      on-role-added: true
+      # Rol kaybedilen zaman bildirim gönder
+      on-role-removed: true
+    # Otomatik rol temizleme (eski rolleri kaldır)
+    auto-cleanup: true
+    # Sadece en yüksek priority'li rolü ver
+    single-role-mode: false
+
+  # Chat Köprüsü (Çift Yönlü)
+  chat-bridge:
+    enabled: true
+    # Discord kanalı ID
+    channel-id: ""
+    # Minecraft -> Discord
+    minecraft-to-discord: true
+    # Discord -> Minecraft
+    discord-to-minecraft: true
+    # Bot mesajlarını gösterme
+    show-bot-messages: false
+    # Webhook kullan (daha güzel görünüm)
+    use-webhook: false
+    webhook-url: ""
+    # LuckPerms Prefix
+    luckperms-prefix:
+      enabled: false
+      format: "[%group%] "
+
+  # Bildirim Sistemi
+  notifications:
+    enabled: true
+    
+    # Player Join/Quit
+    join-quit:
+      enabled: true
+      channel-id: "NOTIFICATIONS_CHANNEL_ID"
+      show-join: true
+      show-quit: true
+    
+    # Death Bildirimleri
+    death-notifications:
+      enabled: true
+      channel-id: "DEATH_CHANNEL_ID"
+      show-killer: true
+      # Oyuncu öldüğünde koordinatları göster
+      show-coordinates: true
+    
+    # Achievement Bildirimleri
+    achievements:
+      enabled: true
+      channel-id: "ACHIEVEMENT_CHANNEL_ID"
+      show-advancement: true
+    
+    # Server Status
+    server-status:
+      enabled: true
+      channel-id: "STATUS_CHANNEL_ID"
+      # Güncelleme sıklığı (dakika)
+      update-interval: 5
+      # Sabit mesaj sistemi - Bot bir kere mesaj gönderir ve onu sürekli düzenler
+      # true: Tek sabit mesaj sürekli güncellenir (önerilen)
+      # false: Her güncellemede yeni mesaj gönderilir
+      persistent-message: true
+      # Sabit mesaj ID'si (otomatik tespit edilir, manuel değiştirmeyin)
+      message-id: ""
+      # Websitesi Butonu
+      website-button:
+        enabled: true
+        label: "Website"
+        url: "https://www.kynux.cloud/"
+        emoji: "🌐"
+
+  # Vote Sistemi BETA
+  vote-system:
+    enabled: true
+    channel-id: "VOTE_CHANNEL_ID"
+    # Minecraft-MP.com API Anahtarı
+    api-key: "YOUR_API_KEY"
+    # Desteklenen vote siteleri
+    sites:
+      minecraftmp:
+        enabled: true
+        url: "https://minecraft-mp.com/server/XXXXX"
+        rewards:
+          - "give {player} diamond 2"
+          - "eco give {player} 150"
+    # Oy Lider Tablosu (Embed Menü)
+    leaderboard:
+      enabled: true
+      channel-id: "VOTE_LEADERBOARD_CHANNEL_ID"
+      # Bu ID'yi el ile değiştirmeyin, bot tarafından yönetilir.
+      message-id: ""
+
+    # Vote streak ödülleri
+    streak-rewards:
+      enabled: true
+      rewards:
+        5:
+          - "give {player} diamond 5"
+        10:
+          - "give {player} netherite_ingot 1"
+
+  # İstatistik & Leaderboard
+  statistics:
+    enabled: true
+    channel-id: "STATS_CHANNEL_ID"
+    
+    # Playtime Tracking
+    playtime:
+      enabled: true
+      # Güncelleme sıklığı (dakika)
+      update-interval: 1
+    
+    # Leaderboards
+    leaderboards:
+      enabled: true
+      # Güncelleme sıklığı (dakika)
+      update-interval: 60
+      # Gösterilecek kategoriler ve ayarları
+      # Her kategori için bir görünen ad (name) ve emoji belirleyebilirsiniz.
+      # PlaceholderAPI'deki istatistik adını (örn: "playtime") anahtar olarak kullanın.
+      category-settings:
+        playtime:
+          name: "Oynama Süresi"
+          emoji: "⏰"
+          enabled: true
+        deaths:
+          name: "Ölümler"
+          emoji: "💀"
+          enabled: true
+        kills:
+          name: "Öldürme"
+          emoji: "⚔️"
+          enabled: true
+        votes:
+          name: "Oylar"
+          emoji: "🗳️"
+          enabled: true
+        vault_eco_balance:
+          name: "Bakiye"
+          emoji: "💰"
+          enabled: true
+        loginstreak:
+          name: "Giriş Serisi"
+          emoji: "🔥"
+          enabled: true
+      message-id: ""
+    
+    # Player Profiles
+    player-profiles:
+      enabled: true
+      # Discord'da profil komutu
+      command-enabled: true
+      # Profil Embed Özelleştirme
+      embed:
+        title: "{player_name} Profili"
+        color: "#5865F2"
+        show-discord-avatar: true
+        show-minecraft-skin: true
+        # Minecraft skin türü: avatar, head, body, head-3d, body-3d
+        skin-type: "body"
+        # Gösterilecek alanlar
+        fields:
+          discord-info:
+            enabled: true
+            name: "📱 Discord Bilgileri"
+            show-tag: true
+            show-last-seen: true
+          balance:
+            enabled: true
+            name: "💰 Bakiye"
+            show-currency: true
+          playtime:
+            enabled: true
+            name: "⏰ Oyun Süresi"
+
+
+            show-current-session: true
+          leaderboard-ranks:
+            enabled: true
+            name: "🏆 Sıralamalar"
+            # Hangi kategorilerde sıralama gösterilecek
+            categories: ["playtime", "kills", "votes", "vault_eco_balance"]
+            # En fazla kaç kategori gösterilecek
+            max-categories: 4
+            # Sadece belirli sıralama aralığındakileri göster (0 = hepsini göster)
+            show-only-top: 100
+          statistics:
+            enabled: true
+            name: "📊 İstatistikler"
+            show-login-streak: true
+            show-vote-count: true
+            show-kd-ratio: true
+            show-death-count: true
+          achievements:
+            enabled: true
+            name: "🎯 Başarımlar"
+            show-total-count: true
+            show-recent: true
+          custom-fields:
+            # Özel alanlar eklenebilir
+            - name: "🌟 Seviye"
+              value: "Başlangıç Oyuncusu"
+              placeholder: "%player_level%"
+              enabled: false
+        # Embed Footer'ı özelleştir
+        footer:
+          show-rank-footer: true
+          rank-messages:
+            top-10: "🏆 Top 10'da yer alıyor!"
+            top-50: "⭐ Top 50'de yer alıyor!"
+            top-100: "🎯 Top 100'de yer alıyor!"
+            default: "İstatistiklerin güncelleniyor..."
+
+    # İstatistik Komutu
+    command:
+      enabled: true
+      aliases: ["stats", "istatistikler"]
+
+    # İstatistik GUI Ayarları
+    gui:
+      title: "&9&l✦ &6&lİstatistikler &9&l✦"
+      rows: 4
+      items:
+        playtime:
+          name: "&b&lOynama Süresi"
+          material: "CLOCK"
+          lore:
+            - "&7Sunucuda geçirdiğin toplam süre."
+            - ""
+            - "&eSıralama: &f%ajlb_lb_playtime_1_alltime_name% - %ajlb_lb_playtime_1_alltime_value%"
+          slot: 11
+          enabled: true
+        kd-ratio:
+          name: "&c&lK/D Oranı"
+          material: "DIAMOND_SWORD"
+          lore:
+            - "&7Kill/Death oranın."
+            - ""
+            - "&eEn İyi K/D: &f%ajlb_lb_kills_1_alltime_name% - %ajlb_lb_kills_1_alltime_value%"
+          slot: 13
+          enabled: true
+        login-streak:
+          name: "&6&lGiriş Serisi"
+          material: "GOLDEN_APPLE"
+          lore:
+            - "&7Ardışık giriş yapma serin."
+            - ""
+            - "&eEn İyi Seri: &f%ajlb_lb_loginstreak_1_alltime_name% - %ajlb_lb_loginstreak_1_alltime_value%"
+          slot: 15
+          enabled: true
+        votes:
+          name: "&d&lOylar"
+          material: "CHEST"
+          lore:
+            - "&7Sunucuya verdiğin toplam oy."
+            - ""
+            - "&eEn Çok Oy Veren: &f%ajlb_lb_votes_1_alltime_name% - %ajlb_lb_votes_1_alltime_value%"
+          slot: 22
+          enabled: true
+        balance:
+          name: "&a&lBakiye"
+          material: "EMERALD"
+          lore:
+            - "&7Mevcut bakiye miktarınız."
+            - ""
+            - "&eBakiye: &f%vault_eco_balance%"
+          slot: 20
+          enabled: true
+        deaths:
+          name: "&c&lÖlümler"
+          material: "SKELETON_SKULL"
+          lore:
+            - "&7Toplam ölüm sayın."
+            - ""
+            - "&eEn Çok Ölen: &f%ajlb_lb_deaths_1_alltime_name% - %ajlb_lb_deaths_1_alltime_value%"
+          slot: 14
+          enabled: true
+
+  # Rewards Sistemi
+  rewards:
+    enabled: true
+    daily-rewards:
+      enabled: true
+      streak-bonus: true
+      max-streak: 30
+    weekly-rewards:
+      enabled: true
+      rewards:
+        - "give {player} diamond 10"
+    custom-rewards:
+      enabled: true
+    boost-rewards:
+      enabled: true
+      channel-id: ""
+      rewards:
+        - "give {player} diamond 5"
+      server-wide-rewards:
+        - "broadcast &6Sunucu boost aldı! Teşekkürler!"
+  
+# ===================================
+#    Mesajlar: messages_tr.yml veya messages_en.yml
+# ===================================
+# 
+# Tüm mesajlar artık dil dosyalarında tutuluyor:
+# - messages_tr.yml (Türkçe)
+# - messages_en.yml (İngilizce)
+# 
+# Dil değiştirmek için yukarıdaki 'language' ayarını kullanın.
+
+# ===================================
+#         Discord Embed Ayarları
+# ===================================
+
+embeds:
+# Sunucu Adı ve İkonu (Bot activity ve embed'lerde kullanılır)
+  server-name: "A Minecraft Server"
+  server-icon: "" # Buraya sunucu logonuzun URL'sini ekleyebilirsiniz. Örn: https://i.imgur.com/logo.png
+  server-ip: "play.sunucum.com"
+  server-url: "store.sunucum.com"
+  
+  # Renk ayarları (HEX formatında)
+  colors:
+    success: "#00FF00"
+    error: "#FF0000"
+    info: "#00BFFF"
+    warning: "#FFA500"
+    default: "#7289DA"
+  
+  # Footer
+  footer:
+    text: "DiscordPlus • Made by Nexoro"
+    icon: ""
+  
+  # Thumbnail (sunucu logosu)
+  thumbnail: ""
