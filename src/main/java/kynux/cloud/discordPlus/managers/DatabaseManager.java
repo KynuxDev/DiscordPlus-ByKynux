@@ -218,6 +218,28 @@ public boolean isConnected() {
         });
     }
 
+    public CompletableFuture<PlayerData> getPlayerByUsername(String username) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                org.bukkit.OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(username);
+                if (offlinePlayer == null || !offlinePlayer.hasPlayedBefore()) {
+                    return null;
+                }
+                
+                UUID playerUUID = offlinePlayer.getUniqueId();
+                PlayerData playerData = loadPlayerData(playerUUID).join();
+                
+                if (playerData != null && playerData.isLinked()) {
+                    return playerData;
+                }
+                return null;
+            } catch (Exception e) {
+                plugin.getLogger().log(Level.SEVERE, "Failed to get player by username: " + username, e);
+                return null;
+            }
+        });
+    }
+
     public CompletableFuture<PlayerData> getPlayerByVerificationCode(String code) {
         return CompletableFuture.supplyAsync(() -> {
             try (PreparedStatement stmt = connection.prepareStatement("SELECT * FROM player_data WHERE verification_code = ?")) {

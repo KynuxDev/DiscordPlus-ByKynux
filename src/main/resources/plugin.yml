@@ -1,5 +1,5 @@
 name: DiscordPlus
-version: '1.0'
+version: '1.1'
 main: kynux.cloud.discordPlus.DiscordPlus
 load: STARTUP
 api-version: 1.16
@@ -41,6 +41,12 @@ commands:
     usage: /<command>
     aliases: [stats, istatistikler]
     permission: discordplus.command.stats
+
+  unlink:
+    description: Admin command to unlink a player's Discord account
+    usage: /<command> <minecraft_username>
+    aliases: [baglantikesme, unlinkaccount]
+    permission: discordplus.admin
     
 permissions:
   discordplus.*:

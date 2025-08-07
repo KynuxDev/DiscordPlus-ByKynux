@@ -4,12 +4,18 @@
 
 # General
 prefix: "&8[&bDiscordPlus&8] &r"
-no-permission: "{prefix}&cYou don't have permission to use this command!"
-player-only: "{prefix}&cThis command can only be used by players!"
+
+# Error Messages
+error:
+  no-permission: "{prefix}&cYou don't have permission to use this command!"
+  player-only: "{prefix}&cThis command can only be used by players!"
+  command-failed: "{prefix}&cCommand execution failed!"
+  database-error: "{prefix}&cDatabase error occurred!"
+
 unknown-command: "{prefix}&cUnknown command! Use &e/discordplus help &cfor help."
 
 # Account Linking
-account-linking:
+linking:
   verification-sent: "{prefix}&aVerification code sent to your Discord!"
   verification-success: "{prefix}&aAccount successfully linked!"
   verification-failed: "{prefix}&cVerification failed! Code is wrong or expired."
@@ -21,13 +27,23 @@ account-linking:
   link-suggestion: "&aLink your Discord account for extra features!"
   link-suggestion-instruction: "&e/verify &7command to link."
 
+# Account Unlinking (Admin)
+unlink:
+  usage: "{prefix}&cUsage: &e/unlink <minecraft_username>"
+  system-disabled: "{prefix}&cAccount linking system is disabled!"
+  player-not-found: "{prefix}&cPlayer '{player}' not found or has never linked a Discord account!"
+  not-linked: "{prefix}&cPlayer '{player}' is not linked to Discord!"
+  success: "{prefix}&aPlayer '{player}' has been successfully unlinked from Discord account ({discord_tag} - {discord_id})!"
+  failed: "{prefix}&cFailed to unlink player '{player}' from Discord account!"
+  error: "{prefix}&cAn unexpected error occurred during the unlinking process!"
+
 # Permission Sync
 permission-sync:
   role-added: "{prefix}&aDiscord role {role} has been given!"
   role-removed: "{prefix}&cDiscord role {role} has been removed!"
-  sync-started: "{prefix}&ePermission roles are being synced..."
-  sync-completed: "{prefix}&aPermission roles successfully synced!"
-  system-disabled: "{prefix}&cPermission sync system is disabled!"
+  started: "{prefix}&ePermission roles are being synced..."
+  completed: "{prefix}&aPermission roles successfully synced!"
+  disabled: "{prefix}&cPermission sync system is disabled!"
   account-not-linked: "{prefix}&cYou must link your Discord account before using this command!"
   account-not-linked-instruction: "{prefix}&e/verify command to link your account."
 
@@ -103,26 +119,32 @@ commands:
   discordplus:
     description: "Plugin management commands"
     usage: "Usage: /{command} [reload|status|info]"
-    help: "&ePlugin management commands for admins"
-    help-reload: "&e/discordplus reload &7- Reload the configuration"
-    help-status: "&e/discordplus status &7- Show plugin status"
-    help-info: "&e/discordplus info &7- Show plugin information"
+    help:
+      header: "&e&lDiscordPlus Help Menu"
+      reload: "&e/discordplus reload &7- Reload the configuration"
+      status: "&e/discordplus status &7- Show plugin status"
+      info: "&e/discordplus info &7- Show plugin information"
     reloaded: "{prefix}&aPlugin configuration reloaded!"
-    status-title: "&b&l=== DiscordPlus Status ==="
-    status-version: "&6Version: &e{version}"
-    status-uptime: "&6Uptime: &e{uptime}"
-    status-discord: "&6Discord: &e{status}"
-    status-database: "&6Database: &e{status}"
-    status-players: "&6Linked Players: &e{count}"
+    status:
+      title: "&b&l=== DiscordPlus Status ==="
+      version: "&6Version: &e{version}"
+      uptime: "&6Uptime: &e{uptime}"
+      discord: "&6Discord: &e{status}"
+      database: "&6Database: &e{status}"
+      players: "&6Linked Players: &e{count}"
     connected: "&aConnected"
     disconnected: "&cDisconnected"
     invalid-args: "{prefix}&cInvalid arguments! Use: &e/discordplus [reload|status|info]"
-    info-title: "&b&l=== DiscordPlus Info ==="
-    info-developer: "&6Developer: &e{developer}"
-    info-website: "&6Website: &e{website}"
-    info-version: "&6Version: &e{version}"
-    info-description: "&6Description: &e{description}"
-    info-language: "&6Language: &e{language}"
+    info:
+      title: "&b&l=== DiscordPlus Info ==="
+      developer: "&6Developer: &e{developer}"
+      website: "&6Website: &e{website}"
+      version: "&6Version: &e{version}"
+      description: "&6Description: &e{description}"
+      language: "&6Language: &e{language}"
+  
+  rewards:
+    invalid-args: "{prefix}&cInvalid arguments! Use: &e/rewards [daily|weekly|claim]"
 
 # Error Messages
 errors:
@@ -149,9 +171,13 @@ death:
   killed-by-player: "{player} was killed by {killer}"
   death-message: "{message}"
 
+# Notifications
+notifications:
+  achievement:
+    player-achieved: "{player} has achieved {achievement}"
+
 # Achievement Messages
 achievement:
-  player-achieved: "{player} has achieved {achievement}"
   advancement-completed: "{player} has made the advancement {advancement}"
 
 # Chat Bridge

@@ -189,6 +189,49 @@ public class LinkingManager {
             });
     }
     
+    public CompletableFuture<Boolean> unlinkAccountByUsername(String minecraftUsername) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                PlayerData playerData = databaseManager.getPlayerByUsername(minecraftUsername).join();
+                if (playerData == null) {
+                    plugin.getLogger().warning("Player not found for username: " + minecraftUsername);
+                    return false;
+                }
+                
+                if (!playerData.isLinked()) {
+                    plugin.getLogger().warning("Player " + minecraftUsername + " is not linked to Discord");
+                    return false;
+                }
+                
+                String discordUserId = playerData.getDiscordId();
+                
+                playerData.setDiscordId(null);
+                playerData.setVerified(false);
+                playerData.setLinkDate(null);
+                playerData.setVerificationCode(null);
+                
+                return databaseManager.savePlayerData(playerData)
+                    .thenApply(v -> {
+                        if (discordUserId != null) {
+                            removeLinkedRoles(discordUserId);
+                        }
+                        
+                        plugin.getLogger().info("Successfully unlinked account by username: " + minecraftUsername + " (Discord ID: " + discordUserId + ")");
+                        return true;
+                    })
+                    .exceptionally(throwable -> {
+                        plugin.getLogger().log(Level.SEVERE, "Failed to save player data during unlink for: " + minecraftUsername, throwable);
+                        return false;
+                    })
+                    .join();
+                    
+            } catch (Exception e) {
+                plugin.getLogger().log(Level.SEVERE, "Error during unlinkAccountByUsername for: " + minecraftUsername, e);
+                return false;
+            }
+        });
+    }
+    
     private boolean isRateLimited(String discordUserId) {
         LocalDateTime lastAttempt = rateLimitMap.get(discordUserId);
         if (lastAttempt == null) {

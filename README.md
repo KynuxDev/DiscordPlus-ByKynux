@@ -10,7 +10,7 @@
 
 *Discord Bot ile hesap eşleme, rol senkronizasyonu, chat köprüsü ve kapsamlı istatistik sistemi*
 
-[![Version](https://img.shields.io/badge/version-1.0-blue.svg)](https://github.com/KynuxDev/DiscordPlus-ByKynux)
+[![Version](https://img.shields.io/badge/version-1.1-blue.svg)](https://github.com/KynuxDev/DiscordPlus-ByKynux)
 [![Minecraft](https://img.shields.io/badge/minecraft-1.16.5+-green.svg)](https://www.spigotmc.org/)
 [![License](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 
@@ -103,7 +103,7 @@
 ### 1️⃣ **Plugin Kurulumu**
 ```bash
 # Plugin'i sunucunuzun plugins klasörüne kopyalayın
-cp discordplus-1.0.jar /path/to/server/plugins/
+cp discordplus-1.1.jar /path/to/server/plugins/
 
 # Sunucuyu başlatın (konfigürasyon dosyaları oluşturulacak)
 java -jar server.jar
@@ -298,7 +298,7 @@ account-linking:
 
 ## 🔄 Güncelleme Notları
 
-### **v1.0** - İlk Sürüm
+### **v1.1** - İlk Sürüm
 - ✅ Temel Discord entegrasyonu
 - ✅ Hesap eşleme sistemi
 - ✅ Rol senkronizasyonu

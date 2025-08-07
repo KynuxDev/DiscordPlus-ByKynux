@@ -146,6 +146,7 @@ public final class DiscordPlus extends JavaPlugin {
         getCommand("verify").setExecutor(new VerifyCommand(this));
         getCommand("sync").setExecutor(new SyncCommand(this));
         getCommand("istatistik").setExecutor(new StatisticCommand(this));
+        getCommand("unlink").setExecutor(new UnlinkCommand(this));
         getLogger().info("Commands registered.");
     }
 

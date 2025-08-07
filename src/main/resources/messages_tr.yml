@@ -1,15 +1,21 @@
-  # ===================================
+# ===================================
 #     DiscordPlus Türkçe Mesajlar
 # ===================================
 
 # Genel
 prefix: "&8[&bDiscordPlus&8] &r"
-no-permission: "{prefix}&cBu komutu kullanma yetkiniz yok!"
-player-only: "{prefix}&cBu komut sadece oyuncular tarafından kullanılabilir!"
+
+# Hata Mesajları
+error:
+  no-permission: "{prefix}&cBu komutu kullanma yetkiniz yok!"
+  player-only: "{prefix}&cBu komut sadece oyuncular tarafından kullanılabilir!"
+  command-failed: "{prefix}&cKomut yürütme başarısız!"
+  database-error: "{prefix}&cVeritabanı hatası oluştu!"
+
 unknown-command: "{prefix}&cBilinmeyen komut! Yardım için &e/discordplus help &ckullanın."
 
 # Hesap Eşleme
-account-linking:
+linking:
   verification-sent: "{prefix}&aDoğrulama kodu Discord'unuza gönderildi!"
   verification-success: "{prefix}&aHesap başarıyla eşlendi!"
   verification-failed: "{prefix}&cDoğrulama başarısız! Kod yanlış veya süresi dolmuş."
@@ -20,6 +26,16 @@ account-linking:
   link-instruction: "&e/verify &7komutunu kullanarak eşleme yapın."
   link-suggestion: "&aDiscord hesabınızı eşleyerek ek özelliklerden yararlanabilirsiniz!"
   link-suggestion-instruction: "&e/verify &7komutunu kullanın."
+
+# Hesap Bağlantısı Kesme (Admin)
+unlink:
+  usage: "{prefix}&cKullanım: &e/unlink <minecraft_username>"
+  system-disabled: "{prefix}&cHesap eşleme sistemi devre dışı!"
+  player-not-found: "{prefix}&cOyuncu '{player}' bulunamadı veya hiç Discord hesabı eşlenmemiş!"
+  not-linked: "{prefix}&cOyuncu '{player}' zaten Discord ile eşlenmiş değil!"
+  success: "{prefix}&aOyuncu '{player}' başarıyla Discord hesabından ({discord_tag} - {discord_id}) ayrıldı!"
+  failed: "{prefix}&cOyuncu '{player}' Discord hesabından ayrılırken hata oluştu!"
+  error: "{prefix}&cBağlantı kesme işlemi sırasında beklenmeyen bir hata oluştu!"
 
 # Permission Sync
 permission-sync:
@@ -103,17 +119,32 @@ commands:
   discordplus:
     description: "Eklenti yönetimi komutları"
     usage: "Kullanım: /{command} [reload|status|info]"
-    help: "&eYöneticiler için eklenti yönetimi komutları"
+    help:
+      header: "&e&lDiscordPlus Yardım Menüsü"
+      reload: "&e/discordplus reload &7- Yapılandırmayı yeniden yükle"
+      status: "&e/discordplus status &7- Eklenti durumunu göster"
+      info: "&e/discordplus info &7- Eklenti bilgilerini göster"
     reloaded: "{prefix}&aEklenti yapılandırması yeniden yüklendi!"
-    status-title: "&b&l=== DiscordPlus Durumu ==="
-    status-version: "&6Sürüm: &e{version}"
-    status-uptime: "&6Çalışma Süresi: &e{uptime}"
-    status-discord: "&6Discord: &e{status}"
-    status-database: "&6Veritabanı: &e{status}"
-    status-players: "&6Bağlı Oyuncular: &e{count}"
+    status:
+      title: "&b&l=== DiscordPlus Durumu ==="
+      version: "&6Sürüm: &e{version}"
+      uptime: "&6Çalışma Süresi: &e{uptime}"
+      discord: "&6Discord: &e{status}"
+      database: "&6Veritabanı: &e{status}"
+      players: "&6Bağlı Oyuncular: &e{count}"
     connected: "&aBağlı"
     disconnected: "&cBağlantı kesildi"
     invalid-args: "{prefix}&cGeçersiz argümanlar! Kullanım: &e/discordplus [reload|status|info]"
+    info:
+      title: "&b&l=== DiscordPlus Bilgi ==="
+      developer: "&6Geliştirici: &e{developer}"
+      website: "&6Website: &e{website}"
+      version: "&6Sürüm: &e{version}"
+      description: "&6Açıklama: &e{description}"
+      language: "&6Dil: &e{language}"
+  
+  rewards:
+    invalid-args: "{prefix}&cGeçersiz argümanlar! Kullanım: &e/rewards [daily|weekly|claim]"
 
 # Hata Mesajları
 errors:
@@ -150,6 +181,11 @@ chat:
   minecraft-to-discord: "**{player}**: {message}"
   discord-to-minecraft: "&8[&bDiscord&8] &b{user}&8: &f{message}"
   webhook-name: "Minecraft Sohbeti"
+
+# Bildirimler
+notifications:
+  achievement:
+    player-achieved: "{player} başarı kazandı: {achievement}"
 
 # Durum Mesajları
 status:
