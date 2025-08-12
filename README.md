@@ -1,4 +1,4 @@
-# DiscordPlus
+# DiscordPlus 
 
 <div align="center">
 
@@ -378,5 +378,6 @@ Made with ❤️ by [Kynux](https://github.com/kynuxdev)
 ![Footer](https://img.shields.io/badge/Made%20with-❤️-red.svg)
 ![Java](https://img.shields.io/badge/Built%20with-Java-orange.svg)
 ![Discord](https://img.shields.io/badge/Powered%20by-Discord-blue.svg)
+
 
 </div>
