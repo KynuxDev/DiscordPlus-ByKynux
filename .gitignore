@@ -1,0 +1,35 @@
+# Maven
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.log
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+.factorypath
+
+# System
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+debug.log
+
+# Build
+build/
+out/
+dist/
+
+# DiscordPlus Specific
+discordplus.db
+discordplus.db.mv.db
+test_profile_card.png
+

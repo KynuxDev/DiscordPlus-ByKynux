@@ -31,6 +31,10 @@ public class PlayerJoinListener implements Listener {
         
         statisticManager.startTracking(player);
 
+        if (plugin.getPermissionSyncManager().isEnabled()) {
+            plugin.getPermissionSyncManager().queuePlayerSync(player);
+        }
+
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             plugin.getDatabaseManager().loadPlayerData(player.getUniqueId())
                     .thenAccept(playerData -> handlePlayerJoin(player, playerData))

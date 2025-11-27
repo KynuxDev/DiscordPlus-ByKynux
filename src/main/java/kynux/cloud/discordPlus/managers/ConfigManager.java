@@ -42,9 +42,13 @@ public class ConfigManager {
         plugin.saveConfig();
     }
 
+    public FileConfiguration getConfig() {
+        return config;
+    }
+
     public String getTimezone() { return config.getString("timezone", "Europe/Istanbul"); }
     public String getLanguage() { return config.getString("language", "tr"); }
-
+    
     
     public String getDiscordToken() { return config.getString("discord.token", ""); }
     public String getGuildId() { return config.getString("discord.guild-id", ""); }
@@ -263,7 +267,6 @@ public class ConfigManager {
     public int getStatisticsGuiRows() { return config.getInt("modules.statistics.gui.rows", 4); }
     public ConfigurationSection getStatisticsGuiItems() { return config.getConfigurationSection("modules.statistics.gui.items"); }
     
-    // GUI Item metodları
     public boolean isGuiItemEnabled(String itemName) { 
         return config.getBoolean("modules.statistics.gui.items." + itemName + ".enabled", false); 
     }

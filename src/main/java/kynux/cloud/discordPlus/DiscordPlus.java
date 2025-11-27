@@ -40,6 +40,7 @@ public final class DiscordPlus extends JavaPlugin {
     private VoteManager voteManager;
     private PermissionSyncManager permissionSyncManager;
     private StatisticManager statisticManager;
+    private kynux.cloud.discordPlus.managers.SecurityManager securityManager;
     private LuckPermsManager luckPermsManager;
     private static Economy econ = null;
     private static DiscordPlus instance;
@@ -108,6 +109,7 @@ public final class DiscordPlus extends JavaPlugin {
         voteManager = new VoteManager(this, configManager, databaseManager, discordManager);
         permissionSyncManager = new PermissionSyncManager(this); 
         statisticManager = new StatisticManager(this, databaseManager, discordManager, configManager);
+        securityManager = new kynux.cloud.discordPlus.managers.SecurityManager(this);
 
         getLogger().info("Managers initialized.");
     }
@@ -136,6 +138,14 @@ public final class DiscordPlus extends JavaPlugin {
         if (configManager.isAccountLinkingEnabled()) {
             getServer().getPluginManager().registerEvents(new kynux.cloud.discordPlus.listeners.LinkingNotificationListener(), this);
         }
+        
+        getServer().getPluginManager().registerEvents(new kynux.cloud.discordPlus.listeners.SecurityListener(this), this);
+
+        if (luckPermsManager.isLuckPermsAvailable()) {
+            new kynux.cloud.discordPlus.listeners.LuckPermsListener(this, luckPermsManager.getLuckPerms());
+            getLogger().info("LuckPerms listener registered.");
+        }
+        
         getLogger().info("Event listeners registered conditionally.");
     }
 
@@ -201,6 +211,10 @@ public final class DiscordPlus extends JavaPlugin {
 
     public StatisticManager getStatisticManager() {
         return statisticManager;
+    }
+
+    public kynux.cloud.discordPlus.managers.SecurityManager getSecurityManager() {
+        return securityManager;
     }
 
     public LuckPermsManager getLuckPermsManager() {

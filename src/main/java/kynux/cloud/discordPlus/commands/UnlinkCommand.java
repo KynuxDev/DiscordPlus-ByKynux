@@ -78,7 +78,6 @@ public class UnlinkCommand implements CommandExecutor {
             plugin.getLogger().log(Level.WARNING, "Could not fetch Discord user info for ID: " + discordId, e);
         }
 
-        // Create final variables for lambda expressions
         final String finalDiscordTag = discordTag;
         final String finalDiscordId = discordId;
 

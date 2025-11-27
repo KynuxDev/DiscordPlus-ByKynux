@@ -53,4 +53,8 @@ public class LuckPermsManager {
     public boolean isLuckPermsAvailable() {
         return this.luckPerms != null;
     }
+
+    public LuckPerms getLuckPerms() {
+        return luckPerms;
+    }
 }

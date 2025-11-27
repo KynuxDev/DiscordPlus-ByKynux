@@ -2,6 +2,7 @@ package kynux.cloud.discordPlus.managers;
 
 import kynux.cloud.discordPlus.DiscordPlus;
 import kynux.cloud.discordPlus.listeners.DiscordCommandListener;
+import kynux.cloud.discordPlus.listeners.DiscordInteractionListener;
 import kynux.cloud.discordPlus.utils.EmbedBuilder;
 import kynux.cloud.discordPlus.utils.TimeUtil;
 import net.dv8tion.jda.api.JDA;
@@ -68,7 +69,7 @@ public class DiscordManager {
             this.jda = JDABuilder.createDefault(token)
                     .setHttpClient(httpClient)
                     .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGES, GatewayIntent.MESSAGE_CONTENT)
-                    .addEventListeners(new DiscordCommandListener(plugin))
+                    .addEventListeners(new DiscordCommandListener(plugin), new DiscordInteractionListener(plugin))
                     .setActivity(Activity.watching(configManager.getBotActivity()))
                     .build();
 
@@ -93,8 +94,7 @@ public class DiscordManager {
             
             startActivityUpdates();
 
-            // Validate and recreate all persistent messages if needed
-            Bukkit.getScheduler().runTaskLater(plugin, this::validateAllPersistentMessages, 20L); // Wait 1 second
+            Bukkit.getScheduler().runTaskLater(plugin, this::validateAllPersistentMessages, 20L);
 
         } catch (Exception e) {
             plugin.getLogger().log(Level.SEVERE, "Failed to start Discord bot! Check your token, guild-id, and internet connection.", e);
@@ -381,13 +381,11 @@ public class DiscordManager {
         MessageEditBuilder editBuilder = new MessageEditBuilder().setEmbeds(embed);
         MessageCreateBuilder createBuilder = new MessageCreateBuilder().setEmbeds(embed);
 
-        // Add components if provided
         if (components != null && !components.isEmpty()) {
             editBuilder.setComponents(components);
             createBuilder.setComponents(components);
         }
 
-        // Add website button if enabled and no custom components provided
         if (configManager.isWebsiteButtonEnabled() && (components == null || components.isEmpty())) {
             String label = configManager.getWebsiteButtonLabel();
             String url = configManager.getWebsiteButtonUrl();
@@ -418,22 +416,18 @@ public class DiscordManager {
                                         Consumer<String> messageIdConsumer) {
         if (messageId != null && !messageId.isEmpty()) {
             channel.retrieveMessageById(messageId).queue(message -> {
-                // Message exists, update it
                 message.editMessage(editBuilder.build()).queue(
                     success -> plugin.getLogger().fine("Successfully updated message: " + messageId),
                     error -> {
                         plugin.getLogger().warning("Failed to update message " + messageId + ": " + error.getMessage());
-                        // If update fails, send new message
                         sendNewMessage(channel, createBuilder, messageIdConsumer);
                     }
                 );
             }, throwable -> {
-                // Message not found, send new one
                 plugin.getLogger().info("Message " + messageId + " not found in channel " + channel.getName() + ", sending new message");
                 sendNewMessage(channel, createBuilder, messageIdConsumer);
             });
         } else {
-            // No message ID provided, send new message
             sendNewMessage(channel, createBuilder, messageIdConsumer);
         }
     }
@@ -461,22 +455,18 @@ public class DiscordManager {
 
         plugin.getLogger().info("Starting validation of all persistent messages...");
 
-        // Validate verification message
         if (configManager.isAccountLinkingEnabled()) {
             validateVerificationMessage();
         }
 
-        // Validate server status message
         if (configManager.isServerStatusEnabled() && configManager.isServerStatusPersistent()) {
             validateServerStatusMessage();
         }
 
-        // Validate vote leaderboard message
         if (configManager.isVoteLeaderboardEnabled()) {
             validateVoteLeaderboardMessage();
         }
 
-        // Validate statistics leaderboard message
         if (configManager.isLeaderboardsEnabled()) {
             validateStatisticsLeaderboardMessage();
         }

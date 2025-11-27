@@ -10,16 +10,12 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.permissions.PermissionAttachmentInfo;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.*;
 import java.util.logging.Logger;
-
 
 public class PermissionSyncManager {
 
@@ -30,14 +26,17 @@ public class PermissionSyncManager {
     private final LinkingManager linkingManager;
     private final LuckPermsManager luckPermsManager;
     private final Logger logger;
-    
+
     private final Map<String, PermissionSyncData> roleMappings = new ConcurrentHashMap<>();
-    
     private final Map<String, Set<String>> playerRoleCache = new ConcurrentHashMap<>();
     
-    private BukkitRunnable syncTask;
+    private final BlockingQueue<UUID> syncQueue = new LinkedBlockingQueue<>();
+    private final Set<UUID> pendingSyncs = ConcurrentHashMap.newKeySet();
+    private volatile boolean isRunning = false;
+    private Thread queueProcessorThread;
+
     private boolean enabled;
-    
+
     public PermissionSyncManager(DiscordPlus plugin) {
         this.plugin = plugin;
         this.configManager = plugin.getConfigManager();
@@ -46,76 +45,94 @@ public class PermissionSyncManager {
         this.linkingManager = plugin.getLinkingManager();
         this.luckPermsManager = plugin.getLuckPermsManager();
         this.logger = plugin.getLogger();
-        
+
         initialize();
     }
 
-    
-
     private void initialize() {
         this.enabled = configManager.isPermissionSyncEnabled();
-        
+
         if (!enabled) {
             logger.info("Permission-Role Sync sistemi devre dışı.");
             return;
         }
-        
+
         loadRoleMappings();
-        startSyncTask();
-        
-        logger.info("Permission-Role Sync sistemi başlatıldı!");
+        startQueueProcessor();
+
+        logger.info("Permission-Role Sync sistemi başlatıldı! (Event-Based Mode)");
     }
 
     private void loadRoleMappings() {
         roleMappings.clear();
-        
+
         ConfigurationSection mappings = configManager.getRoleMappings();
         if (mappings == null) return;
-        
-        for (String permission : mappings.getKeys(false)) {
-            ConfigurationSection section = mappings.getConfigurationSection(permission);
+
+        for (String key : mappings.getKeys(false)) {
+            ConfigurationSection section = mappings.getConfigurationSection(key);
             if (section == null) continue;
-            
+
+            String permission = section.getString("permission");
             String roleId = section.getString("role-id");
-            String roleName = section.getString("name");
+            // "name" configde opsiyonel olabilir, yoksa key'i kullanalım
+            String roleName = section.getString("name", key.substring(0, 1).toUpperCase() + key.substring(1));
             int priority = section.getInt("priority", 0);
-            
-            if (roleId != null && roleName != null) {
+
+            if (permission != null && roleId != null) {
                 roleMappings.put(permission, new PermissionSyncData(permission, roleId, roleName, priority));
                 logger.info("Rol eşleştirmesi yüklendi: " + permission + " -> " + roleName + " (" + roleId + ")");
+            } else {
+                logger.warning("Hatalı rol eşleştirmesi: " + key + " (Permission veya Role ID eksik)");
             }
         }
-        
+
         logger.info("Toplam " + roleMappings.size() + " rol eşleştirmesi yüklendi.");
     }
 
-    private void startSyncTask() {
-        if (syncTask != null && !syncTask.isCancelled()) {
-            syncTask.cancel();
-        }
-        
-        int interval = configManager.getPermissionCheckInterval();
-        long intervalTicks = interval * 20L;
-        
-        syncTask = new BukkitRunnable() {
-            @Override
-            public void run() {
-                syncAllPlayers();
+    private void startQueueProcessor() {
+        isRunning = true;
+        queueProcessorThread = new Thread(() -> {
+            while (isRunning) {
+                try {
+                    UUID playerId = syncQueue.poll(1, TimeUnit.SECONDS);
+                    if (playerId != null) {
+                        Player player = Bukkit.getPlayer(playerId);
+                        if (player != null && player.isOnline()) {
+                            try {
+                                syncPlayer(player).join(); 
+                                Thread.sleep(500); 
+                            } catch (Exception e) {
+                                logger.warning("Error syncing player " + player.getName() + ": " + e.getMessage());
+                            }
+                        }
+                        pendingSyncs.remove(playerId);
+                    }
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                } catch (Exception e) {
+                    logger.severe("Error in sync queue processor: " + e.getMessage());
+                }
             }
-        };
+        }, "DiscordPlus-Sync-Processor");
+        queueProcessorThread.start();
+    }
+    
+    public void queuePlayerSync(Player player) {
+        if (!enabled) return;
+        if (pendingSyncs.contains(player.getUniqueId())) return; 
         
-        syncTask.runTaskTimerAsynchronously(plugin, intervalTicks, intervalTicks);
-        logger.info("Permission sync task başlatıldı. Kontrol aralığı: " + interval + " saniye");
+        pendingSyncs.add(player.getUniqueId());
+        syncQueue.offer(player.getUniqueId());
     }
 
     public void syncAllPlayers() {
-        if (!enabled || discordManager.getJDA() == null) return;
-        
+        if (!enabled) return;
         for (Player player : Bukkit.getOnlinePlayers()) {
-            syncPlayer(player);
+            queuePlayerSync(player);
         }
     }
-    
 
     public CompletableFuture<Void> syncPlayer(Player player) {
         CompletableFuture<Void> future = new CompletableFuture<>();
@@ -321,9 +338,7 @@ public class PermissionSyncManager {
 
         logger.info("[Sync Debug] " + player.getName() + " için LuckPerms yetkileri kontrol ediliyor...");
         
-        
         for (String permission : roleMappings.keySet()) {
-            
             if (luckPermsManager.hasPermission(player, permission)) {
                 logger.info("[Sync Debug] ++ Eşleşen yetki bulundu: " + permission);
                 permissions.add(permission);
@@ -359,12 +374,12 @@ public class PermissionSyncManager {
         String message = MessageUtil.getMessage(MessageUtil.Messages.PERMISSION_SYNC_STARTED);
         player.sendMessage(message);
 
-        syncPlayer(player).thenRun(() -> {
-            Bukkit.getScheduler().runTask(plugin, () -> {
-                String completedMessage = MessageUtil.getMessage(MessageUtil.Messages.PERMISSION_SYNC_COMPLETED);
-                player.sendMessage(completedMessage);
-            });
-        });
+        queuePlayerSync(player);
+        
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+             String completedMessage = MessageUtil.getMessage(MessageUtil.Messages.PERMISSION_SYNC_COMPLETED);
+             player.sendMessage(completedMessage);
+        }, 40L); 
     }
 
 
@@ -373,21 +388,19 @@ public class PermissionSyncManager {
     }
 
     public void reload() {
-        if (syncTask != null && !syncTask.isCancelled()) {
-            syncTask.cancel();
-        }
-        
-        playerRoleCache.clear();
+        shutdown();
         initialize();
     }
 
     public void shutdown() {
-        if (syncTask != null && !syncTask.isCancelled()) {
-            syncTask.cancel();
+        isRunning = false;
+        if (queueProcessorThread != null) {
+            queueProcessorThread.interrupt();
         }
-        
-        playerRoleCache.clear();
+        syncQueue.clear();
+        pendingSyncs.clear();
         roleMappings.clear();
+        playerRoleCache.clear();
         
         logger.info("Permission-Role Sync sistemi kapatıldı.");
     }

@@ -1,0 +1,4 @@
+---
+alwaysApply: true
+---
+Yazdığın kodlarda sakın yorum satırları kullanma """,#,//,/* gibi

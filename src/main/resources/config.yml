@@ -65,6 +65,15 @@ language: "tr"
 # ===================================
 
 modules:
+  # Güvenlik Modülü (2FA - Yönetici Giriş Onayı)
+  security:
+    2fa:
+      enabled: true
+      # Onaylama süresi (saniye)
+      timeout: 60
+      # Sadece belirli yetkiye sahip oyuncular için (discordplus.2fa.required)
+      require-permission: true
+
   # Hesap Eşleme Sistemi
   account-linking:
     enabled: true
@@ -90,42 +99,51 @@ modules:
   # Permission-Role Sync Sistemi
   permission-sync:
     enabled: true
-    # Permission kontrol sıklığı (saniye)
+    # Event-Based (Anlık) Senkronizasyon
+    # true: Oyuncu girdiğinde ve rank atladığında anında senkronize eder (Önerilen)
+    # false: Belirli aralıklarla herkesi kontrol eder (Eski yöntem)
+    event-based: true
+    # Permission kontrol sıklığı (saniye) - Sadece event-based: false ise kullanılır
     check-interval: 300
     # Rol eşleştirmeleri (permission: discord-role-id)
     role-mappings:
-      discordplus:
-        # VIP Rolleri
-        vip:
-          role-id: ""
-          name: "VIP"
-          priority: 1
-          plus:
-            role-id: ""
-            name: "VIP+"
-            priority: 2
-        # Staff Rolleri
-        mod:
-          role-id: ""
-          name: "Moderatör"
-          priority: 10
-        admin:
-          role-id: ""
-          name: "Admin"
-          priority: 20
-        owner:
-          role-id: ""
-          name: "Owner"
-          priority: 99
-        # Özel Roller
-        donator:
-          role-id: ""
-          name: "Destekçi"
-          priority: 5
-        builder:
-          role-id: ""
-          name: "Builder"
-          priority: 3
+      # permission:
+      #   role-id: "DISCORD_ROLE_ID"
+      #   priority: 1 (Yüksek sayı = yüksek öncelik)
+      
+      # VIP Rolleri
+      vip:
+        permission: "discordplus.vip"
+        role-id: ""
+        priority: 1
+      vip_plus:
+        permission: "discordplus.vip.plus"
+        role-id: ""
+        priority: 2
+        
+      # Staff Rolleri
+      mod:
+        permission: "discordplus.mod"
+        role-id: ""
+        priority: 10
+      admin:
+        permission: "discordplus.admin"
+        role-id: ""
+        priority: 20
+      owner:
+        permission: "discordplus.owner"
+        role-id: ""
+        priority: 99
+        
+      # Özel Roller
+      donator:
+        permission: "discordplus.donator"
+        role-id: ""
+        priority: 5
+      builder:
+        permission: "discordplus.builder"
+        role-id: ""
+        priority: 3
     # DM Bildirimleri
     dm-notifications:
       enabled: true
@@ -280,6 +298,8 @@ modules:
     # Player Profiles
     player-profiles:
       enabled: true
+      # Profil kartını resim olarak oluştur (Önerilen: true)
+      image-renderer-enabled: true
       # Discord'da profil komutu
       command-enabled: true
       # Profil Embed Özelleştirme
@@ -331,9 +351,9 @@ modules:
           custom-fields:
             # Özel alanlar eklenebilir
             - name: "🌟 Seviye"
-              value: "Başlangıç Oyuncusu"
-              placeholder: "%player_level%"
-              enabled: false
+            value: "Başlangıç Oyuncusu"
+            placeholder: "%player_level%"
+            enabled: false
         # Embed Footer'ı özelleştir
         footer:
           show-rank-footer: true

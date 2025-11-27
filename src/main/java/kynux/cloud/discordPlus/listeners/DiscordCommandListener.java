@@ -4,6 +4,7 @@ import kynux.cloud.discordPlus.DiscordPlus;
 import kynux.cloud.discordPlus.data.PlayerData;
 import kynux.cloud.discordPlus.managers.*;
 import kynux.cloud.discordPlus.utils.EmbedBuilder;
+import kynux.cloud.discordPlus.utils.ImageRenderer;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
@@ -14,10 +15,12 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.components.text.TextInput;
 import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
+import net.dv8tion.jda.api.utils.FileUpload;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.UUID;
 
@@ -170,33 +173,35 @@ public class DiscordCommandListener extends ListenerAdapter {
                 OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerUUID);
                 PlayerData playerData = statisticManager.getPlayerData(playerUUID);
                 double balance = plugin.getEconomy() != null ? plugin.getEconomy().getBalance(offlinePlayer) : 0.0;
-
                 
                 String playerName = offlinePlayer.getName();
-                if (playerName != null) {
-                    
-                    java.util.List<String> categories = configManager.getProfileRankCategories();
-                    
-                    
-                    java.util.Map<String, kynux.cloud.discordPlus.managers.StatisticManager.PlayerRankInfo> rankings = 
+                if (playerName == null) playerName = "Unknown";
+                
+                boolean useImageRenderer = configManager.getConfig().getBoolean("modules.statistics.player-profiles.image-renderer-enabled", true);
+                
+                if (useImageRenderer) {
+                    try (InputStream imageStream = ImageRenderer.createProfileImage(playerData, playerName, offlinePlayer.isOnline())) {
+                        if (imageStream != null) {
+                            event.getHook().sendFiles(FileUpload.fromData(imageStream, "profile.png")).queue();
+                            return;
+                        }
+                    } catch (Exception e) {
+                        plugin.getLogger().warning("Failed to render profile image, falling back to embed: " + e.getMessage());
+                    }
+                }
+
+                java.util.List<String> categories = configManager.getProfileRankCategories();
+                java.util.Map<String, kynux.cloud.discordPlus.managers.StatisticManager.PlayerRankInfo> rankings = 
                         statisticManager.getPlayerRankings(playerName, categories);
 
+                if (configManager.isProfileFieldEnabled("leaderboard-ranks") || 
+                    !configManager.getProfileEmbedTitle().equals("{player_name} Profili") ||
+                    !configManager.getProfileEmbedColor().equals("#5865F2")) {
                     
-                    if (configManager.isProfileFieldEnabled("leaderboard-ranks") || 
-                        !configManager.getProfileEmbedTitle().equals("{player_name} Profili") ||
-                        !configManager.getProfileEmbedColor().equals("#5865F2")) {
-                        
-                        event.getHook().sendMessageEmbeds(
-                            EmbedBuilder.enhancedPlayerProfile(user, offlinePlayer, playerData, balance, rankings)
-                        ).queue();
-                    } else {
-                        
-                        event.getHook().sendMessageEmbeds(
-                            EmbedBuilder.playerProfile(user, offlinePlayer, playerData, balance)
-                        ).queue();
-                    }
+                    event.getHook().sendMessageEmbeds(
+                        EmbedBuilder.enhancedPlayerProfile(user, offlinePlayer, playerData, balance, rankings)
+                    ).queue();
                 } else {
-                    
                     event.getHook().sendMessageEmbeds(
                         EmbedBuilder.playerProfile(user, offlinePlayer, playerData, balance)
                     ).queue();

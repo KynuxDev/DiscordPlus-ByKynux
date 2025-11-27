@@ -139,12 +139,10 @@ public class DiscordPlusCommand implements CommandExecutor {
             sender.sendMessage("§e[DiscordPlus] Discord mesajları doğrulanıyor...");
             sender.sendMessage("§7Config'deki message ID'ler kontrol ediliyor ve eksik mesajlar yeniden gönderiliyor...");
             
-            // Async olarak çalıştır çünkü Discord API çağrıları zaman alabilir
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
                 try {
                     plugin.getDiscordManager().validateAllPersistentMessages();
                     
-                    // Ana thread'de sonuç mesajını gönder
                     plugin.getServer().getScheduler().runTask(plugin, () -> {
                         sender.sendMessage("§a[DiscordPlus] Discord mesaj doğrulaması tamamlandı!");
                         sender.sendMessage("§7Detaylar için server console'unu kontrol edin.");
