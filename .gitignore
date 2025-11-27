@@ -14,6 +14,7 @@ target/
 .classpath
 .project
 .factorypath
+.cursor/
 
 # System
 .DS_Store
@@ -32,4 +33,3 @@ dist/
 discordplus.db
 discordplus.db.mv.db
 test_profile_card.png
-
